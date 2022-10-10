@@ -10,7 +10,11 @@ pipeline {
 		git 'https://github.com/devopscbabu/maven-sample.git'
                }
             }
-
+         stage('validate') { 
+            steps { 
+                sh 'mvn clean validate'
+            }
+        }
 
         stage('Build') { 
             steps { 
