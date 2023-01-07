@@ -1,31 +1,31 @@
-pipeline {
-   agent any
-   tools{
-       maven 'M2_HOME'
-       }
+pipeline { 
+    agent any 
+    tools {
+        maven 'M2_HOME'
+          }
+    stages {
 
-   stages {
-	stage('Checkout') {
+        stage('SourceCode') {
         steps {
 		git 'https://github.com/devopscbabu/maven-sample.git'
                }
             }
-      stage('Build my job') {
-        steps {
-            sh 'mvn clean compile'
-               }
+         stage('validate') { 
+            steps { 
+                sh 'mvn clean validate'
             }
-      stage('Package you App') {
-         steps{
-             sh 'mvn clean package'
-               }
+        }
+
+        stage('Build') { 
+            steps { 
+                sh 'mvn clean compile'
             }
-      stage('Sonar Checks') {
-	 steps{
-	    withSonarQubeEnv(installationName: 'Sonarscanner', credentialsId: 'SonarCloud') {
-    	    sh 'mvn clean package sonar:sonar'
-     		}
-  	 }
-      } 
-   }         
+        }
+        stage('Package you App'){
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        
+    }
 }
